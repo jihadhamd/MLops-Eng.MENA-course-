@@ -12,8 +12,9 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from prodml.config import settings
 from prodml.data import clean_data, load_data, split_data
 from prodml.features import engineer_features
+from prodml.logging_conf import setup_logging
 
-logging.basicConfig(level=settings.log_level)
+setup_logging(level=settings.log_level)
 logger = logging.getLogger(__name__)
 
 
@@ -67,11 +68,11 @@ def main() -> None:
     predictor.train(X_train, y_train)
 
     metrics = predictor.evaluate(X_val, y_val)
-    print(f"Validation MAE: {metrics['mae']:.4f}")
-    print(f"Validation RMSE: {metrics['rmse']:.4f}")
+    logger.info(f"Validation MAE: {metrics['mae']:.4f}")
+    logger.info(f"Validation RMSE: {metrics['rmse']:.4f}")
 
     predictor.save(settings.model_path)
-    print(f"Model saved to {settings.model_path}")
+    logger.info(f"Model saved to {settings.model_path}")
 
 
 if __name__ == "__main__":

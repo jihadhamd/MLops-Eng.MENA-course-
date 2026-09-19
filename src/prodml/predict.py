@@ -7,6 +7,9 @@ from functools import wraps
 from pathlib import Path
 from typing import Any
 
+from prodml.logging_conf import setup_logging
+
+setup_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -47,8 +50,16 @@ class DurationPredictor:
     @timed
     def predict_one(self, features: dict[str, Any]) -> float:
         """Predict duration for a single set of features."""
+        logger.debug(f"Feature vector: {features}")
+
+        if features.get("trip_distance", 0) > 100:
+            logger.warning(
+                f"trip_distance outside training range: {features.get('trip_distance')}"
+            )
+
         X = self.dv.transform([features])
         pred = self.model.predict(X)[0]
+        logger.info(f"Prediction served: {pred:.2f} minutes")
         return float(pred)
 
     def predict_batch(self, features: list[dict[str, Any]]) -> list[float]:
