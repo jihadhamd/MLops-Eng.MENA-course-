@@ -51,9 +51,7 @@ async def lifespan(app: FastAPI):
     if not ONNX_PATH.exists():
         export_onnx(settings.model_path, ONNX_PATH)
 
-    with open(
-        settings.model_path, "rb"
-    ) as f:  # noqa: ASYNC230 - startup only, runs once
+    with open(settings.model_path, "rb") as f:  # noqa: ASYNC230
         state["dv"] = pickle.load(f)["dv"]
 
     state["session"] = rt.InferenceSession(str(ONNX_PATH))
