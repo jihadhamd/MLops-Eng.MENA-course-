@@ -37,3 +37,18 @@ Image: jihadhamy/prodml-api:0.1.0 (also tagged latest)
 Verified: pulled fresh (after removing all local images/cache) and confirmed
 /health and /predict work correctly with zero local setup - matches the
 handbook's acceptance check for Step 7.
+
+## Maturity Self-Assessment
+
+**Current level: Level 2 - Reproducible**
+
+This module delivers: versioned code in Git with a clean commit history per
+step, a reproducible install/train/serve workflow defined in pyproject.toml,
+a containerized service running as non-root with a healthcheck, structured
+JSON logging with correlation IDs, and a pytest suite enforcing a 70%+
+coverage gate.
+
+**What's missing to reach Level 3 (Continuous Integration)**: an automated
+CI pipeline (e.g. GitHub Actions) that runs lint and tests on every PR, and
+automated data/model versioning (e.g. DVC) instead of committing model
+artifacts directly to Git.
